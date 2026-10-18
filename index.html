@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hariom Kumar | Data-Driven Digital Marketer</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS Setup -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        handwriting: ['Caveat', 'cursive'], 
+                    },
+                    colors: {
+                        bgDark: '#1A1D24',
+                        cardDark: '#232732',
+                        inputDark: '#2A2E39',
+                        tealAccent: '#00D4BD',
+                        tealAccentHover: '#00b8a3',
+                        textMuted: '#8B95A5',
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #1A1D24;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Floating Animations for Doodles */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(5deg); }
+            66% { transform: translateY(5px) rotate(-5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes float-reverse {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(10px) rotate(-5deg); }
+            66% { transform: translateY(-5px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .doodle-1 { animation: float 6s ease-in-out infinite; }
+        .doodle-2 { animation: float-reverse 7s ease-in-out infinite; }
+        .doodle-3 { animation: float 8s ease-in-out infinite; animation-delay: 1s; }
+        .doodle-4 { animation: float-reverse 6s ease-in-out infinite; animation-delay: 2s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1A1D24; }
+        ::-webkit-scrollbar-thumb { background: #00D4BD; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00b8a3; }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* AI Chat typing indicator dots */
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out;
+            fill: #00D4BD;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        /* Formatting AI markdown responses slightly */
+        .ai-message-content strong { color: #00D4BD; font-weight: 600; }
+        .ai-message-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; }
+    </style>
+</head>
+<body class="antialiased selection:bg-tealAccent selection:text-bgDark">
+
+    <!-- Navbar -->
+    <header class="w-full fixed top-0 z-40 bg-bgDark/90 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto px-6 h-24 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-wide text-white">Hariom<span class="text-tealAccent">Kumar</span></a>
+            
+            <nav class="hidden md:flex gap-10 items-center text-sm font-medium text-textMuted">
+                <a href="#home" class="hover:text-white transition-colors">Home</a>
+                <a href="#about" class="hover:text-white transition-colors">About Me</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </nav>
+
+            <button class="md:hidden text-textMuted hover:text-tealAccent focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-cardDark border-t border-gray-800 px-6 py-4 flex flex-col gap-4 text-sm font-medium absolute w-full left-0">
+            <a href="#home" class="text-textMuted hover:text-tealAccent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
+            <a href="#about" class="text-textMuted hover:text-tealAccent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About Me</a>
+            <a href="#contact" class="text-textMuted hover:text-tealAccent" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pt-32 relative z-10">
+
+        <!-- Hero Section -->
+        <section id="home" class="min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-12 relative pt-10">
+            <!-- Left Content -->
+            <div class="w-full lg:w-1/2 flex flex-col items-start z-10">
+                <h1 class="text-5xl md:text-6xl lg:text-[70px] font-extrabold text-white leading-[1.1] mb-6">
+                    DATA-DRIVEN<br/>
+                    <span class="text-tealAccent">MARKETER</span>
+                </h1>
+                <p class="text-textMuted text-base md:text-lg mb-10 max-w-md leading-relaxed font-light">
+                    Scaling brands with high-converting funnels and data-backed strategies for agencies in Delhi NCR & Bangalore.
+                </p>
+                <div class="flex flex-wrap gap-5 items-center mb-16">
+                    <a href="#contact" class="bg-tealAccent hover:bg-tealAccentHover text-bgDark font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,212,189,0.3)]">
+                        Hire me
+                    </a>
+                    <a href="#" class="border-2 border-textMuted hover:border-tealAccent hover:text-tealAccent text-textMuted font-semibold py-3 px-8 rounded-full transition-all duration-300 flex items-center gap-3">
+                        Download CV <i class="fa-solid fa-download text-sm"></i>
+                    </a>
+                </div>
+                
+                <a href="#about" class="w-12 h-12 border border-gray-700 rounded-lg flex items-center justify-center text-textMuted hover:text-tealAccent hover:border-tealAccent transition-colors">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+            </div>
+
+            <!-- Right Illustration with Doodles -->
+            <div class="w-full lg:w-1/2 relative h-[500px] flex items-center justify-center">
+                <!-- Doodles -->
+                <svg class="absolute w-12 h-12 top-10 left-10 doodle-1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 50 Q50 10 80 50 L70 50 M80 50 L80 40" stroke="#00D4BD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="absolute w-16 h-16 bottom-20 left-0 doodle-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 20 L30 80 M50 20 L50 80 M20 40 L60 40 M20 60 L60 60" stroke="#00D4BD" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <svg class="absolute w-12 h-12 top-20 right-10 doodle-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M40 20 C20 20 20 50 40 50 C60 50 60 80 40 80" stroke="#00D4BD" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <div class="absolute top-[40%] right-[5%] text-tealAccent font-handwriting text-2xl doodle-4">HTML</div>
+                <div class="absolute bottom-[30%] right-[15%] text-tealAccent font-handwriting text-2xl doodle-1">Python</div>
+                <i class="fa-solid fa-music absolute top-[60%] left-[10%] text-tealAccent text-xl doodle-2"></i>
+
+                <!-- Main SVG Character -->
+                <svg viewBox="0 0 400 400" class="w-full max-w-[400px] z-10" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Shadow -->
+                    <ellipse cx="200" cy="350" rx="120" ry="10" fill="#0E1015"/>
+                    <!-- Legs -->
+                    <path d="M220 250 L280 340 L310 340" fill="none" stroke="#00D4BD" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M220 250 L140 340 L100 340" fill="none" stroke="#00D4BD" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Shoes -->
+                    <path d="M300 320 L320 340 L280 345 Z" fill="#ffffff"/>
+                    <path d="M110 320 L90 340 L130 345 Z" fill="#ffffff"/>
+                    <!-- Body/Shirt -->
+                    <path d="M170 180 Q200 150 240 180 L260 270 L180 270 Z" fill="#ffffff"/>
+                    <!-- Arm -->
+                    <path d="M220 180 Q260 230 200 240" fill="none" stroke="#ffffff" stroke-width="30" stroke-linecap="round"/>
+                    <circle cx="190" cy="245" r="15" fill="#FFC8B4"/> <!-- Hand -->
+                    <!-- Head -->
+                    <circle cx="210" cy="140" r="30" fill="#FFC8B4"/>
+                    <!-- Hair -->
+                    <path d="M185 140 Q210 100 240 135 Q220 160 185 140 Z" fill="#00D4BD"/>
+                    <!-- Laptop -->
+                    <polygon points="130,230 180,230 190,270 120,270" fill="#A0AAB2"/>
+                    <polygon points="120,270 190,270 190,280 120,280" fill="#00D4BD"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-24 relative">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-16">
+                <!-- Left Content -->
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                        About <span class="text-tealAccent">me</span>
+                    </h2>
+                    <p class="text-textMuted text-[15px] leading-loose mb-6">
+                        I am a performance-focused digital marketer with a B.Tech in Computer Science from Graphic Era University (2023). Currently honing my skills through Tutedude, I specialize in building end-to-end funnels, SEO, and paid campaigns. 
+                    </p>
+                    <p class="text-textMuted text-[15px] leading-loose mb-6">
+                        I focus on practical execution, like mapping <strong class="text-white">50+ target keywords</strong> and conducting <strong class="text-white">100% technical website audits</strong>, to drive real growth.
+                    </p>
+                    <a href="#works" class="text-white font-semibold text-sm hover:text-tealAccent transition-colors">
+                        View my projects <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Right Illustration -->
+                <div class="w-full md:w-1/2 relative h-[400px] flex items-center justify-center">
+                    <!-- Doodles background -->
+                    <svg class="absolute w-full h-full opacity-30 doodle-2" viewBox="0 0 400 400">
+                        <path d="M50 100 Q 80 50 120 100 T 180 80" fill="none" stroke="#00D4BD" stroke-width="2"/>
+                        <circle cx="300" cy="80" r="5" fill="#00D4BD"/>
+                        <path d="M 320 200 L 340 220 L 320 240" fill="none" stroke="#00D4BD" stroke-width="3"/>
+                        <path d="M 50 300 L 70 300 M 60 290 L 60 310" stroke="#00D4BD" stroke-width="3"/>
+                        <text x="250" y="320" fill="#00D4BD" font-family="Caveat" font-size="24">deadlines</text>
+                    </svg>
+
+                    <!-- Illustration: Person relaxing/leaning back with laptop -->
+                    <svg viewBox="0 0 400 400" class="w-full max-w-[350px] z-10" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="200" cy="360" rx="100" ry="8" fill="#0E1015"/>
+                        <!-- Chair -->
+                        <path d="M150 200 L120 320 L180 320 Z" fill="#00D4BD"/>
+                        <path d="M120 320 L120 360" stroke="#8B95A5" stroke-width="10"/>
+                        <!-- Person Body -->
+                        <path d="M150 220 Q 200 240 240 280 L 200 320 L 120 280 Z" fill="#ffffff"/>
+                        <!-- Legs -->
+                        <path d="M220 280 L300 280 L320 350" fill="none" stroke="#00D4BD" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Laptop on Table -->
+                        <rect x="250" y="250" width="80" height="10" fill="#00D4BD"/>
+                        <polygon points="260,250 320,250 310,210 270,210" fill="#A0AAB2"/>
+                        <!-- Head -->
+                        <circle cx="160" cy="180" r="25" fill="#FFC8B4"/>
+                        <!-- Hair -->
+                        <path d="M140 180 Q160 140 185 170 Q170 190 140 180 Z" fill="#00D4BD"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="works" class="py-24">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 text-center md:text-left">
+                My recent <span class="text-tealAccent">works</span>
+            </h2>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 justify-center md:justify-start mb-12">
+                <button class="px-6 py-2 rounded-full bg-tealAccent text-bgDark text-sm font-bold tracking-wide transition-colors">All</button>
+                <button class="px-6 py-2 rounded-full border border-gray-600 text-textMuted text-sm font-semibold hover:border-tealAccent hover:text-tealAccent transition-colors">SEO</button>
+                <button class="px-6 py-2 rounded-full border border-gray-600 text-textMuted text-sm font-semibold hover:border-tealAccent hover:text-tealAccent transition-colors">Performance</button>
+                <button class="px-6 py-2 rounded-full border border-gray-600 text-textMuted text-sm font-semibold hover:border-tealAccent hover:text-tealAccent transition-colors">Funnels</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-cardDark rounded-2xl p-5 border border-gray-800 hover:border-tealAccent/50 transition-colors group cursor-pointer shadow-lg hover:shadow-tealAccent/10">
+                    <div class="h-48 bg-[#1A1D24] rounded-xl flex items-center justify-center mb-5 overflow-hidden relative border border-gray-800">
+                        <div class="w-24 h-16 bg-purple-600 rounded-md shadow-lg transform group-hover:scale-110 transition-transform duration-500 flex items-center justify-center">
+                            <i class="fa-solid fa-filter text-white text-2xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-tealAccent transition-colors">Growvanta Agency Funnel</h3>
+                    <p class="text-sm text-textMuted">End-to-end conversion architecture designed to increase lead generation velocity.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-cardDark rounded-2xl p-5 border border-gray-800 hover:border-tealAccent/50 transition-colors group cursor-pointer shadow-lg hover:shadow-tealAccent/10">
+                    <div class="h-48 bg-[#1A1D24] rounded-xl flex items-center justify-center mb-5 overflow-hidden relative border border-gray-800">
+                        <div class="flex gap-2 transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="w-16 h-20 bg-white rounded shadow text-bgDark flex flex-col p-2 text-[8px] font-bold"><div class="h-2 w-full bg-tealAccent mb-1"></div>Keyword 1<br>Keyword 2<br>Keyword 3</div>
+                            <div class="w-20 h-24 bg-gray-200 rounded shadow -ml-4 mt-4 text-bgDark p-2 text-[8px] font-bold"><div class="h-2 w-full bg-tealAccent mb-1"></div>Search Intent<br>Mapping</div>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-tealAccent transition-colors">Advanced Keyword Blueprint</h3>
+                    <p class="text-sm text-textMuted">Mapped 50+ high-intent keywords analyzing search volume and competitor gaps.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-cardDark rounded-2xl p-5 border border-gray-800 hover:border-tealAccent/50 transition-colors group cursor-pointer shadow-lg hover:shadow-tealAccent/10">
+                    <div class="h-48 bg-[#1A1D24] rounded-xl flex items-center justify-center mb-5 overflow-hidden relative border border-gray-800">
+                        <div class="flex gap-3 transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="w-10 h-20 border border-tealAccent rounded-3xl flex items-center justify-center"><i class="fa-solid fa-mobile-screen text-tealAccent"></i></div>
+                            <div class="w-10 h-20 border border-tealAccent rounded-3xl flex items-center justify-center"><i class="fa-solid fa-gauge-high text-tealAccent"></i></div>
+                            <div class="w-10 h-20 border border-tealAccent rounded-3xl flex items-center justify-center"><i class="fa-solid fa-code text-tealAccent"></i></div>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-tealAccent transition-colors">Technical SEO Audit</h3>
+                    <p class="text-sm text-textMuted">Comprehensive 100% technical website health optimization for mobile indexing.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 border-t border-gray-800">
+            <div class="flex flex-col md:flex-row justify-between gap-16">
+                <!-- Left (Heading & Illustration) -->
+                <div class="w-full md:w-5/12">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-12">
+                        Got a project in <br/>
+                        <span class="text-tealAccent">mind?</span>
+                    </h2>
+                    
+                    <div class="relative w-full h-[250px] flex items-end">
+                        <!-- Chart Bars -->
+                        <rect x="0" y="0" width="100%" height="100%" fill="none"/>
+                        <div class="w-10 bg-white rounded-t-sm h-[40%] absolute left-10 bottom-0"></div>
+                        <div class="w-10 bg-tealAccent rounded-t-sm h-[60%] absolute left-24 bottom-0"></div>
+                        <div class="w-10 bg-tealAccent rounded-t-sm h-[80%] absolute left-38 bottom-0"></div>
+                        
+                        <!-- Small Person SVG -->
+                        <svg viewBox="0 0 100 200" class="absolute w-20 h-40 bottom-[40%] left-12 z-10 doodle-1" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Legs -->
+                            <path d="M40 100 L20 160 M40 100 L60 150 L60 180" fill="none" stroke="#00D4BD" stroke-width="12" stroke-linecap="round"/>
+                            <!-- Body -->
+                            <path d="M40 50 L40 100" fill="none" stroke="#ffffff" stroke-width="25" stroke-linecap="round"/>
+                            <path d="M40 60 L70 90" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round"/>
+                            <!-- Head -->
+                            <circle cx="40" cy="30" r="15" fill="#FFC8B4"/>
+                            <path d="M25 30 Q40 10 55 30 Z" fill="#00D4BD"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Right (Form) -->
+                <div class="w-full md:w-6/12 pt-4">
+                    <form onsubmit="handleFormSubmit(event)" class="flex flex-col gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-semibold text-white pl-2">Your name</label>
+                                <input type="text" placeholder="Name" required
+                                    class="w-full bg-cardDark border border-transparent rounded-xl px-5 py-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tealAccent transition-colors">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-semibold text-white pl-2">Your email</label>
+                                <input type="email" placeholder="Email" required
+                                    class="w-full bg-cardDark border border-transparent rounded-xl px-5 py-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tealAccent transition-colors">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs font-semibold text-white pl-2">Your Message</label>
+                            <textarea rows="5" placeholder="Message" required
+                                class="w-full bg-cardDark border border-transparent rounded-xl px-5 py-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tealAccent transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="self-start mt-2 bg-tealAccent hover:bg-tealAccentHover text-bgDark font-bold py-3.5 px-8 rounded-full transition-all duration-300 flex items-center gap-2">
+                            Send Message <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-bgDark pt-12 pb-8 mt-10 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col items-center">
+            
+            <div class="flex gap-8 text-sm font-medium text-textMuted mb-8">
+                <a href="#home" class="hover:text-tealAccent transition-colors flex items-center gap-2"><i class="fa-solid fa-home"></i> Home</a>
+                <a href="#about" class="hover:text-tealAccent transition-colors flex items-center gap-2"><i class="fa-solid fa-user"></i> About me</a>
+                <a href="#contact" class="hover:text-tealAccent transition-colors flex items-center gap-2"><i class="fa-solid fa-envelope"></i> Contact</a>
+            </div>
+
+            <div class="flex gap-4 mb-8">
+                <a href="#" class="w-10 h-10 rounded-full bg-cardDark flex items-center justify-center text-textMuted hover:text-white hover:bg-tealAccent transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-cardDark flex items-center justify-center text-textMuted hover:text-white hover:bg-tealAccent transition-all"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-cardDark flex items-center justify-center text-textMuted hover:text-white hover:bg-tealAccent transition-all"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+
+            <div class="w-full flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 gap-4">
+                <p>Hariom Kumar | +91 9389472524 | hariomkumar97x@gmail.com</p>
+                <p>Terms of Service · Privacy Policy</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Top Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 bg-tealAccent text-bgDark px-6 py-3 rounded-lg font-semibold shadow-lg flex items-center gap-3 z-[60]">
+        <i class="fa-solid fa-circle-check"></i> Message sent successfully!
+    </div>
+
+    <!-- AI Assistant Chat Widget -->
+    <div id="ai-chat-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        
+        <!-- Chat Window -->
+        <div id="ai-chat-window" class="hidden w-80 sm:w-96 bg-cardDark border border-gray-700 shadow-2xl rounded-2xl overflow-hidden flex-col mb-4 transform transition-transform origin-bottom-right scale-95 opacity-0 duration-200">
+            <!-- Header -->
+            <div class="bg-bgDark px-4 py-3 border-b border-gray-700 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-tealAccent/20 flex items-center justify-center text-tealAccent">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-sm">Hariom's AI Assistant</h3>
+                        <p class="text-[10px] text-tealAccent">Powered by Gemini</p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-textMuted hover:text-white transition-colors focus:outline-none p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Chat History -->
+            <div id="chat-messages" class="h-72 overflow-y-auto p-4 flex flex-col gap-3 text-sm bg-[#1A1D24]/50 custom-scrollbar">
+                <!-- Initial Bot Message -->
+                <div class="flex gap-2 items-end self-start max-w-[85%]">
+                    <div class="w-6 h-6 rounded-full bg-tealAccent/20 flex shrink-0 items-center justify-center text-tealAccent text-xs mb-1">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-cardDark border border-gray-700 text-white p-3 rounded-2xl rounded-bl-sm leading-relaxed shadow-sm">
+                        Hi! I'm Hariom's AI assistant. Ask me anything about his skills, education, or projects!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3 bg-bgDark border-t border-gray-700">
+                <form id="ai-chat-form" class="flex gap-2">
+                    <input type="text" id="chat-input" required placeholder="Ask about SEO..." autocomplete="off"
+                        class="flex-1 bg-inputDark text-white text-sm rounded-xl px-4 py-2.5 outline-none border border-transparent focus:border-tealAccent/50 transition-colors placeholder-gray-500">
+                    <button type="submit" id="send-chat" class="bg-tealAccent hover:bg-tealAccentHover text-bgDark w-10 h-10 rounded-xl flex items-center justify-center transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_2px_10px_rgba(0,212,189,0.2)]">
+                        <i class="fa-solid fa-paper-plane text-sm"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="ai-chat-toggle" class="bg-tealAccent text-bgDark w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-[0_4px_20px_rgba(0,212,189,0.4)] hover:scale-105 hover:bg-tealAccentHover transition-all focus:outline-none relative group">
+            <i class="fa-solid fa-message"></i>
+            <!-- Notification Dot -->
+            <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 border-2 border-bgDark rounded-full"></span>
+            
+            <!-- Tooltip -->
+            <span class="absolute right-full mr-4 bg-cardDark text-white text-xs font-semibold py-1.5 px-3 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-gray-700">
+                Ask AI about Hariom
+            </span>
+        </button>
+    </div>
+
+    <script>
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            e.target.reset();
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- Gemini AI Chatbot Logic ---
+        
+        const chatToggle = document.getElementById('ai-chat-toggle');
+        const chatWindow = document.getElementById('ai-chat-window');
+        const closeChatBtn = document.getElementById('close-chat');
+        const chatForm = document.getElementById('ai-chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const messagesContainer = document.getElementById('chat-messages');
+        const sendBtn = document.getElementById('send-chat');
+
+        // Gemini API config
+        const apiKey = ""; // Canvas provides this implicitly
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        // The System Instruction sets the persona and grounds the AI in Hariom's facts
+        const systemInstructionText = `You are the friendly, professional AI recruiting assistant for Hariom Kumar. Your goal is to help recruiters, HR professionals, and agency owners understand Hariom's value as a candidate for Digital Marketing and Performance Marketing roles.
+
+        CRITICAL RULES:
+        1. Keep answers VERY concise (1-3 short sentences max).
+        2. Format output nicely (use bullet points if listing things, use bolding for emphasis).
+        3. DO NOT hallucinate. Only use the provided context below.
+        4. If asked something outside this context, politely say you only have information regarding Hariom's professional marketing profile and suggest they use the contact form to reach him directly.
+
+        CONTEXT ABOUT HARIOM KUMAR:
+        - Full Name: Hariom Kumar
+        - Target Roles: Digital Marketing Executive, Performance Marketing Intern, SEO Executive, Digital Marketer.
+        - Target Locations: Delhi NCR, Gurugram (Gurgaon), Bangalore, Pune.
+        - Education: B.Tech in Computer Science Engineering from Graphic Era University (GEU), Graduated 2023. (This gives him a strong analytical and technical problem-solving edge).
+        - Core Skills: SEO, Performance Marketing, Keyword Research, Search Intent Analysis, Technical SEO Audits, Campaign Optimization, Funnel Building, CRO.
+        - Tools: Google Analytics, Google Search Console, Google Keyword Planner, WordPress, Meta Business Suite, Excel/Google Sheets, Canva, basic HTML.
+        - Current Training: Actively learning Digital Marketing and Performance Marketing through Tutedude.
+        - Project 1: "Growvanta Agency Funnel" - Planned a digital marketing agency website focusing on SEO-friendly landing pages and Conversion Rate Optimization (CRO).
+        - Project 2: "Advanced Keyword Blueprint" - Created a 50+ keyword research spreadsheet organized by volume, competition, and search intent.
+        - Project 3: "Technical SEO Audit" - Reviewed website performance for desktop/mobile and identified technical SEO improvements.
+        - Previous Experience: Worked as an Analyst at Teleperformance (Gurgaon) for 1 year 7 months. Handled process operations, quality standards, and KPIs. (Note: Frame this as building transferable skills like communication and problem-solving, but keep focus on his new marketing path).
+        - Contact: Phone (9389472524), Email (hariomkumar97x@gmail.com).
+
+        Tone: Enthusiastic, helpful, professional, and slightly conversational.`;
+
+        // Store chat history to maintain context
+        let chatHistory = [];
+
+        // Toggle Chat UI
+        function toggleChat() {
+            const isHidden = chatWindow.classList.contains('hidden');
+            if (isHidden) {
+                chatWindow.classList.remove('hidden');
+                chatWindow.classList.remove('scale-95', 'opacity-0');
+                chatWindow.classList.add('flex', 'scale-100', 'opacity-100');
+                chatToggle.querySelector('.bg-red-500')?.remove(); // Remove notification dot on open
+                chatInput.focus();
+            } else {
+                chatWindow.classList.remove('scale-100', 'opacity-100');
+                chatWindow.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                    chatWindow.classList.remove('flex');
+                }, 200);
+            }
+        }
+
+        chatToggle.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
+
+        // Helper to scroll to bottom
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Helper to format AI markdown locally (bold and simple lists)
+        function formatText(text) {
+            let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formatted = formatted.replace(/\n\* (.*?)/g, '<br>• $1');
+            formatted = formatted.replace(/\n- (.*?)/g, '<br>• $1');
+            return formatted.replace(/\n/g, '<br>');
+        }
+
+        // Add message to UI
+        function appendMessage(role, text, id = null) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex gap-2 items-end max-w-[85%] ${role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`;
+            if (id) msgDiv.id = id;
+
+            const iconHtml = role === 'user' 
+                ? `<div class="w-6 h-6 rounded-full bg-inputDark flex shrink-0 items-center justify-center text-textMuted text-xs mb-1"><i class="fa-solid fa-user"></i></div>`
+                : `<div class="w-6 h-6 rounded-full bg-tealAccent/20 flex shrink-0 items-center justify-center text-tealAccent text-xs mb-1"><i class="fa-solid fa-robot"></i></div>`;
+            
+            const bubbleClasses = role === 'user'
+                ? `bg-tealAccent text-bgDark p-3 rounded-2xl rounded-br-sm shadow-md font-medium`
+                : `bg-cardDark border border-gray-700 text-white p-3 rounded-2xl rounded-bl-sm leading-relaxed shadow-sm ai-message-content`;
+
+            const contentHtml = `<div class="${bubbleClasses}">${role === 'user' ? text : formatText(text)}</div>`;
+
+            msgDiv.innerHTML = `${iconHtml}${contentHtml}`;
+            messagesContainer.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        // Add typing indicator
+        function appendTypingIndicator() {
+            const id = 'typing-' + Date.now();
+            const msgDiv = document.createElement('div');
+            msgDiv.id = id;
+            msgDiv.className = `flex gap-2 items-end self-start max-w-[85%]`;
+            msgDiv.innerHTML = `
+                <div class="w-6 h-6 rounded-full bg-tealAccent/20 flex shrink-0 items-center justify-center text-tealAccent text-xs mb-1">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-cardDark border border-gray-700 p-3 rounded-2xl rounded-bl-sm h-[46px] flex items-center justify-center gap-1 w-16 shadow-sm">
+                    <svg height="8" width="8" class="typing-dot"><circle cx="4" cy="4" r="4"/></svg>
+                    <svg height="8" width="8" class="typing-dot"><circle cx="4" cy="4" r="4"/></svg>
+                    <svg height="8" width="8" class="typing-dot"><circle cx="4" cy="4" r="4"/></svg>
+                </div>
+            `;
+            messagesContainer.appendChild(msgDiv);
+            scrollToBottom();
+            return id;
+        }
+
+        // Main API Call
+        async function fetchGeminiResponse(userMessage) {
+            appendMessage('user', userMessage);
+            
+            // Disable input while generating
+            chatInput.value = '';
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+
+            const loadingId = appendTypingIndicator();
+
+            // Prepare history payload for Gemini
+            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: { parts: [{ text: systemInstructionText }] }
+            };
+
+            // Implement exponential backoff for API limits
+            const maxRetries = 3;
+            let delay = 1000;
+            let data = null;
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 429) {
+                        throw new Error("Throttled");
+                    }
+
+                    data = await response.json();
+                    break; // Success
+                } catch (error) {
+                    if (i === maxRetries - 1 || error.message !== "Throttled") {
+                        data = { error: true };
+                        break;
+                    }
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+            }
+
+            // Remove loading UI
+            document.getElementById(loadingId)?.remove();
+
+            if (data && data.candidates && data.candidates.length > 0) {
+                const botReply = data.candidates[0].content.parts[0].text;
+                appendMessage('model', botReply);
+                chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+            } else {
+                const errorMsg = "Sorry, I'm having trouble connecting right now. Please try again later or use the contact form.";
+                appendMessage('model', errorMsg);
+                chatHistory.pop(); // Remove the user message from history so it doesn't break future context
+            }
+
+            // Re-enable input
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
+
+        // Handle Chat Form Submit
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            fetchGeminiResponse(text);
+        });
+
+    </script>
+</body>
+</html>
